@@ -1,0 +1,230 @@
+# Image Feature Extraction Configuration for Parkinson's Disease Classification
+# Optimized for small datasets (~70 images)
+
+# ============================================================================
+# Feature Extraction
+# ============================================================================
+feature_extraction:
+  # Primary method: Pretrained CNN (frozen)
+  use_cnn_features: true
+  cnn_model: "resnet50"  # Options: "resnet18", "resnet34", "resnet50"
+  pretrained: "imagenet"  # Use ImageNet weights
+  freeze: true  # DO NOT fine-tune (not enough data)
+
+  # Feature dimensionality
+  feature_dim: 2048  # ResNet50 global avg pool output
+
+  # Normalization
+  normalize: true
+  scaler: "standard"  # Options: "standard", "minmax", "none"
+
+# ============================================================================
+# Pretrained CNN Configuration
+# ============================================================================
+cnn:
+  # Model settings
+  model: "resnet50"
+  weights: "imagenet"
+
+  # Remove final classification layer
+  remove_fc: true
+
+  # Extract features from:
+  # "avgpool" = Global average pooling (2048-D for ResNet50)
+  # "layer4" = Last convolutional block
+  extraction_layer: "avgpool"
+
+  # Keep model frozen (no fine-tuning)
+  frozen: true
+
+  # Preprocessing for ImageNet models
+  preprocessing:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+    resize: [224, 224]
+
+  # Batch processing
+  batch_size: 16
+  num_workers: 0  # Set to 0 for compatibility
+  pin_memory: false
+
+# ============================================================================
+# Traditional Features (Optional)
+# ============================================================================
+traditional_features:
+  enabled: true
+
+  # HOG (Histogram of Oriented Gradients)
+  hog:
+    enabled: true
+    orientations: 9
+    pixels_per_cell: [8, 8]
+    cells_per_block: [2, 2]
+
+  # Spiral-specific features
+  spiral_features:
+    enabled: true
+    features:
+      - circularity  # How circular the spiral is
+      - roundness   # Similar to circularity
+      - compactness # Area / perimeter^2
+      - solidity    # Convex hull area / actual area
+      - eccentricity # Ellipse fit eccentricity
+      - line_thickness_variance # PD: inconsistent line thickness
+      - radius_variance # PD: micrographia (variable radius)
+      - center_distance_mean # Mean distance from center
+      - center_distance_std # Variability in distance
+
+# ============================================================================
+# Data Augmentation
+# ============================================================================
+augmentation:
+  enabled: true
+  augment_only_training: true  # Don't augment test set
+
+  # Number of augmented versions per image
+  n_augmented: 2  # Generate 2-3 augmented versions
+  n_augmented_min: 2
+  n_augmented_max: 3
+
+  # Geometric transforms
+  rotation:
+    enabled: true
+    range: [-15, 15]  # degrees
+
+  flip:
+    enabled: true
+    horizontal: true
+    vertical: true
+
+  zoom:
+    enabled: true
+    range: [0.9, 1.1]
+
+  # Intensity transforms
+  contrast:
+    enabled: true
+    range: [0.8, 1.2]
+
+  brightness:
+    enabled: false  # Can affect clinical interpretation
+    range: [0.9, 1.1]
+
+  # Noise
+  noise:
+    enabled: false  # Can remove tremor information
+    std: 0.01
+
+# ============================================================================
+# Feature Saving/Loading
+# ============================================================================
+caching:
+  # Save extracted features to disk (avoid re-extraction)
+  enabled: true
+  cache_dir: "cache/features/"
+
+  # File format
+  format: "npy"  # Options: "npy", "pkl", "h5"
+
+  # Overwrite cache
+  overwrite: false
+
+  # Cache filename pattern
+  filename_pattern: "{model}_{dataset}_{augmented}.npy"
+
+# ============================================================================
+# Visualization
+# ============================================================================
+visualization:
+  # t-SNE visualization of CNN features
+  tsne:
+    enabled: true
+    n_components: 2
+    perplexity: 30  # Reduce for small datasets
+    n_iter: 1000
+    random_state: 42
+
+  # PCA visualization
+  pca:
+    enabled: true
+    n_components: 2
+
+  # Feature distribution plots
+  plot_distributions: true
+  top_n_features: 20
+
+  # Sample augmented images
+  plot_augmented_samples: true
+  n_samples: 5
+
+  # Save figures
+  save_plots: true
+  output_dir: "results/figures/"
+
+# ============================================================================
+# Data Loading
+# ============================================================================
+data_loading:
+  # Directory structure
+  # Expected:
+  # data_dir/
+  #   healthy/
+  #     img1.png
+  #     img2.png
+  #   parkinsons/
+  #     img1.png
+  #     img2.png
+  directory_structure: "class_subdirectories"
+
+  # Image loading
+  image_size: [224, 224]
+  color_mode: "grayscale"  # Options: "grayscale", "rgb"
+
+  # Convert grayscale to RGB for pretrained models
+  grayscale_to_rgb: true
+  rgb_method: "repeat"  # Options: "repeat" (3 channels), "stack"
+
+  # Normalization
+  normalize: true
+  normalize_range: [0, 1]  # Scale pixels to [0, 1]
+
+  # Labels
+  label_map:
+    healthy: 0
+    control: 0
+    parkinsons: 1
+    pd: 1
+    pwp: 1
+
+# ============================================================================
+# Feature Selection (Optional)
+# ============================================================================
+feature_selection:
+  # Reduce dimensionality if needed
+  enabled: false
+
+  # PCA
+  pca:
+    enabled: false
+    n_components: 100  # Reduce from 2048 to 100
+
+  # Feature selection methods
+  select_k_best:
+    enabled: false
+    k: 100
+    score_func: "f_classif"
+
+# ============================================================================
+# Validation
+# ============================================================================
+validation:
+  # Check feature quality
+  check_nan: true
+  check_inf: true
+  check_range: true
+
+  # Warn if features are out of expected range
+  feature_range: [-10, 10]
+
+  # Minimum samples required
+  min_samples: 10

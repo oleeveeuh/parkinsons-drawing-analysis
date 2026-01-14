@@ -1,0 +1,210 @@
+# Tabular Feature Extraction Configuration for Parkinson's Disease Classification
+# Optimized for small datasets (~70 samples)
+
+# ============================================================================
+# Feature Selection
+# ============================================================================
+feature_selection:
+  # Use TSFresh automated features (limited set for small data)
+  use_tsfresh: true
+  tsfresh_feature_count: 50  # Maximum number of TSFresh features to keep
+
+  # Use manual PD-specific features
+  use_manual_features: true
+
+  # Total target feature count (includes both TSFresh and manual)
+  max_features: 150
+
+# ============================================================================
+# TSFresh Configuration
+# ============================================================================
+tsfresh:
+  # Use efficient (minimal) feature calculators
+  fc_parameters: "efficient"  # Options: "efficient", "comprehensive"
+
+  # Specific feature types to extract (avoid too many)
+  selected_features:
+    - "mean"           # Basic statistics
+    - "standard_deviation"
+    - "minimum"
+    - "maximum"
+    - "range"
+    - "median"
+
+    - "linear_trend"    # Trend features
+    - "agg_linear_trend"
+
+    - "fft_aggregated"  # Frequency domain features
+    - "permutation_entropy"
+
+    - "autocorrelation"  # Temporal patterns
+    - "partial_autocorrelation"
+
+    - "c3"  # Nonlinear features
+    - "cid_ce"  # Complexity
+
+  # Feature selection method
+  selection_method: "variance"  # Options: "variance", "importance", "none"
+
+# ============================================================================
+# Manual Parkinson's-Specific Features
+# ============================================================================
+manual_features:
+  # Velocity features (bradykinesia indicator)
+  velocity:
+    enabled: true
+    features:
+      - mean
+      - std
+      - max
+      - min
+      - median
+      - cv  # coefficient of variation
+
+  # Acceleration features
+  acceleration:
+    enabled: true
+    features:
+      - mean
+      - std
+      - max
+      - rms
+
+  # Jerk (smoothness indicator)
+  jerk:
+    enabled: true
+    features:
+      - mean
+      - std
+      - max
+
+  # Pressure features
+  pressure:
+    enabled: true
+    features:
+      - mean
+      - std
+      - cv
+      - range
+      - stability_index  # proportion of stable pressure periods
+
+  # Tremor features (4-8 Hz range)
+  tremor:
+    enabled: true
+    frequency_range: [4, 8]  # Hz
+    features:
+      - power_in_band  # Total power in tremor frequency
+      - peak_frequency  # Frequency with max power
+      - tremor_intensity  # Ratio of power in tremor band to total
+
+  # Spiral geometry features
+  geometry:
+    enabled: true
+    features:
+      - total_path_length
+      - displacement  # Distance from start to end
+      - winding_number  # How many times spiral winds
+      - curvature_mean
+      - curvature_std
+      - tortuosity  # Path length / displacement
+
+  # Drawing quality features
+  drawing_quality:
+    enabled: true
+    features:
+      - duration  # Total drawing time
+      - sampling_rate  # Points per second
+      - pen_lifts  # Number of z-coordinate spikes
+      - direction_changes  # Sharp angle changes
+      - smoothness  # Inverse of jerk
+
+  # Dimension-specific features (for x, y, z, pressure)
+  dimensions:
+    enabled: true
+    features:
+      - mean
+      - std
+      - range
+      - skewness
+      - kurtosis
+
+# ============================================================================
+# Data Preprocessing
+# ============================================================================
+preprocessing:
+  # Handle variable length sequences
+  normalize_length: false  # Don't pad/truncate - use feature-based approach
+
+  # Feature normalization
+  scale_features: true
+  scaler: "standard"  # Options: "standard", "minmax", "robust"
+
+  # Outlier handling
+  clip_outliers: true
+  clip_method: "iqr"  # Options: "iqr", "zscore", "none"
+  clip_threshold: 3.0
+
+# ============================================================================
+# Data Augmentation
+# ============================================================================
+augmentation:
+  enabled: true  # Use SMOTE for small datasets
+
+  method: "smote"  # Options: "smote", "adasyn", "smote-nc"
+  sampling_strategy: 1.0  # Target ratio (1.0 = balanced classes)
+
+  # SMOTE parameters
+  k_neighbors: 3  # Reduce for small datasets
+  random_state: 42
+
+  # Validation
+  validate_synthetic: true
+  max_augmentation_factor: 3  # Don't exceed 3x original size
+
+# ============================================================================
+# Feature Selection Post-Extraction
+# ============================================================================
+post_extraction:
+  # Remove low-variance features
+  variance_threshold: 0.01
+
+  # Correlation filtering (remove highly correlated features)
+  remove_correlated: true
+  correlation_threshold: 0.95
+
+  # Univariate feature selection
+  select_k_best: false
+  k_best: 50
+  score_func: "f_classif"  # Options: "f_classif", "mutual_info", "chi2"
+
+# ============================================================================
+# Visualization
+# ============================================================================
+visualization:
+  # Plot feature distributions (PD vs Control)
+  plot_distributions: true
+  top_n_features: 20
+
+  # Feature importance plot
+  plot_importance: true
+
+  # Correlation heatmap
+  plot_correlation: false  # Can be slow with many features
+
+  # Save figures
+  save_plots: true
+  output_dir: "results/figures/"
+
+# ============================================================================
+# Validation
+# ============================================================================
+validation:
+  # Check for invalid values
+  check_nan: true
+  check_inf: true
+
+  # Minimum samples required
+  min_samples: 10
+
+  # Warn if too many features for sample size
+  max_feature_to_sample_ratio: 2  # features <= 2 * samples
