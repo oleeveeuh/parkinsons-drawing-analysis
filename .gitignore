@@ -1,0 +1,78 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+data/
+results/
+*.log
+models/
+*.pt
+*.pth
+*.pkl
+*.joblib
+
+# Sensitive data
+*.csv
+*.xlsx
+!configs/*.csv
+
+# Archive
+archive_old_approach/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Figures (if you don't want to commit them)
+# results/figures/
+
+# Metrics (if you don't want to commit them)
+# results/metrics/
+.png
+.jpg
+.jpeg
+.bmp
+.gif
+.txt
+.wav
