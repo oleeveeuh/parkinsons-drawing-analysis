@@ -788,12 +788,8 @@ features:
 
 ## Contact
 
-**Student Portfolio Project**
-
 **Email:** [oliau@usc.edu]
 **LinkedIn:** [linkedin.com/in/olivialiau]
-
-**Recruiters:** I'd welcome the opportunity to discuss this project and explore how my skills in machine learning engineering, statistical rigor, and technical problem-solving could contribute to your team.
 
 ---
 
