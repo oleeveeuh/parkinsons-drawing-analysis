@@ -206,8 +206,8 @@ both old and new carry the limitations below.
 Requires Python 3.11 or 3.12.
 
 ```bash
-git clone https://github.com/oleeveeuh/MoE-MultiSDAR-PD-Classification.git
-cd MoE-MultiSDAR-PD-Classification
+git clone git@github.com:oleeveeuh/parkinsons-drawing-analysis.git
+cd parkinsons-drawing-analysis
 python3.11 -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"          # core + test dependencies
 ```
@@ -273,9 +273,10 @@ docs/                      data_audit.md data_sources.md
 data/, cache/, results/    git-ignored local data, caches, artifacts
 ```
 
-The previous MoE/multimodal code was removed before this rewrite; the
-name of this repository predates the current scope (rename pending —
-suggested: `parkinsons-drawing-analysis`).
+The previous MoE-era code was removed before this rewrite; the repository
+was renamed from `MoE-MultiSDAR-PD-Classification` to
+`parkinsons-drawing-analysis` to reflect current scope (GitHub redirects
+the old name).
 
 ## Reproducibility notes
 
