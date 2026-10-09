@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pd-drawing-analysis"
+version = "1.0.0"
+description = "Subject-aware evaluation of Parkinson's drawing features (research-only benchmark; not for clinical use)"
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+# License intentionally unspecified: no LICENSE file exists in this repo.
+# Adding one requires confirming ownership / institutional (NSF REU) terms.
+authors = [{ name = "Olivia Liau" }]
+keywords = ["parkinsons", "drawing-analysis", "machine-learning", "cross-validation", "data-leakage"]
+
+dependencies = [
+    "numpy>=1.26,<3",
+    "pandas>=2.1,<3",
+    "scipy>=1.11,<2",
+    "scikit-learn>=1.4,<2",
+    "scikit-image>=0.22,<1",
+    "PyYAML>=6.0,<7",
+    "tqdm>=4.66,<5",
+    "pillow>=10.0,<12",
+]
+
+[project.optional-dependencies]
+# Optional frozen CNN features (ResNet-18 embeddings). Never needed for
+# tests or CI; triggers a one-time weights download only when invoked.
+cnn = ["torch>=2.2", "torchvision>=0.17"]
+# Optional comparison model, evaluated only after the simple baselines.
+xgboost = ["xgboost>=2.0,<4"]
+dev = ["pytest>=8.0", "ruff>=0.4"]
+
+[project.scripts]
+pd-drawing-env = "pd_drawing_analysis.__init__:print_environment"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"

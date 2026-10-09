@@ -1,0 +1,42 @@
+# Spatial (Kaggle drawings) evaluation configuration.
+# Research-only benchmark; NOT for clinical use.
+
+data:
+  root: KaggleSpiral/drawings     # contains spiral/ and wave/ task trees
+  image_size: [128, 128]          # grayscale resize; recorded in cache keys
+
+features:
+  hog:
+    orientations: 9
+    pixels_per_cell: [8, 8]
+    cells_per_block: [2, 2]
+    block_norm: L2-Hys
+  shape_features: 12              # see pd_drawing_analysis/features.py
+  cnn:                            # optional; requires pip install '.[cnn]' and --cnn
+    enabled: false
+    model: resnet18
+    weights: IMAGENET1K_V1        # torchvision weights API (no deprecated pretrained=True)
+
+validation:
+  outer_splits: 5                 # StratifiedGroupKFold over participants
+  inner_splits: 3                 # StratifiedGroupKFold within outer-training
+  random_state: 42
+  group_by: subject               # class-aware ids: parkinson:Vxx / healthy:Vxx
+  shared_outer_folds_across_tasks: true
+
+preprocessing:                    # fitted inside each fold via sklearn Pipeline
+  variance_threshold: 0.0
+  pca_variance: 0.95
+  oversampling: none              # class weights instead of SMOTE; see README
+
+models:
+  - dummy_majority
+  - logreg_balanced               # grid: C in [0.01, 0.1, 1.0]
+  - decision_tree_depth2_4        # grid: max_depth in [2, 3, 4]
+  # xgboost_shallow               # optional extra; add --with-xgboost
+
+uncertainty:
+  bootstrap_resamples: 2000       # subject-level, stratified, percentile CIs
+  bootstrap_random_state: 42
+  task_comparison: paired_sign_flip_permutation
+  task_comparison_permutations: 10000

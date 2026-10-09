@@ -1,0 +1,34 @@
+# Temporal (UCI tablet recordings) evaluation configuration.
+# Research-only benchmark; NOT for clinical use.
+
+data:
+  root: "Improved Spiral Test Using Digitized Graphics Tablet for Monitoring Parkinson's Disease/data/alldata"
+  columns: [x, y, z, pressure, grip_angle, timestamp, test_id]
+  one_file_one_participant: true  # documented assumption; original UCI ids were lost to renaming
+
+features:
+  count: 25                       # see pd_drawing_analysis/features.py
+  time_normalization: per_recording_median_dt  # removes mixed timestamp units
+  include_z: false                # z features excluded by default; run --include-z
+                                  # to re-evaluate them transparently (docs/data_audit.md)
+
+validation:
+  outer_splits: 5                 # StratifiedGroupKFold over participants
+  inner_splits: 3
+  random_state: 42
+  group_by: subject               # one recording per participant
+
+preprocessing:                    # fitted inside each fold via sklearn Pipeline
+  variance_threshold: 0.0
+  pca_variance: 0.95
+  oversampling: none              # class weighting instead of SMOTE
+
+models:
+  - dummy_majority
+  - logreg_balanced               # grid: C in [0.01, 0.1, 1.0]
+  - decision_tree_depth2_4        # grid: max_depth in [2, 3, 4]
+  # xgboost_shallow               # optional extra; add --with-xgboost
+
+uncertainty:
+  bootstrap_resamples: 2000       # subject-level, stratified, percentile CIs
+  bootstrap_random_state: 42
