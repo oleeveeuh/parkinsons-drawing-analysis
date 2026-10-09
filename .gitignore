@@ -1,78 +1,29 @@
-# Python
+# --- Python ---
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
 *.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual environments
+build/
+dist/
+.venv/
 venv/
-ENV/
-env/
-.venv
 
-# Jupyter Notebook
-.ipynb_checkpoints
-*.ipynb_checkpoints/
+# --- Data (never commit; see docs/data_sources.md for download instructions) ---
+data/
+KaggleSpiral/
+Improved Spiral Test Using Digitized Graphics Tablet for Monitoring Parkinson's Disease/
+cache/
+results/
 
-# IDEs
+# --- Generated / obsolete local-only material ---
+local_archive/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
 .vscode/
 .idea/
 *.swp
-*.swo
-*~
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Project specific
-data/
-results/
+# --- Environments / secrets ---
+.env
 *.log
-models/
-*.pt
-*.pth
-*.pkl
-*.joblib
-
-# Sensitive data
-*.csv
-*.xlsx
-!configs/*.csv
-
-# Archive
-archive_old_approach/
-
-# Temporary files
-tmp/
-temp/
-*.tmp
-
-# Figures (if you don't want to commit them)
-# results/figures/
-
-# Metrics (if you don't want to commit them)
-# results/metrics/
-.png
-.jpg
-.jpeg
-.bmp
-.gif
-.txt
-.wav
