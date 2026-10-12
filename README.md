@@ -179,13 +179,35 @@ any time and compare):
 standard deviation. Confusion matrices (LogReg, participants): temporal
 `TN=13 FP=2 FN=1 TP=24`; spatial spiral `TN=10 FP=3 FN=2 TP=13`.
 
-**What the corrected protocol changed:** the previous (leaky,
-image-level) pipeline reported spiral 72.4% ± 11.0% vs wave 62.8% ± 9.0%
-and called the gap a task-complexity finding. Under participant-grouped
-evaluation the paired difference is exactly zero (p = 1.0) — there is no
-evidence that one task is more diagnostic. These numbers are **not
-comparable** to the old ones (different features, model, and protocol);
-both old and new carry the limitations below.
+**What the leakage fix changed** (measured apples-to-apples — same model,
+features and participant-level aggregation, only the split differs,
+30 repeated partitions; regenerate with
+`python scripts/measure_split_impact.py`):
+
+| Comparison | Leaky image-level split | Participant-grouped split |
+|---|---|---|
+| Spiral participant accuracy (mean ± std over seeds) | 0.860 ± 0.033 | 0.833 ± 0.028 |
+| Advertised sample size | 102 images | 28 participants |
+| Test images whose subject was in training | **97–100%** | 0% |
+
+The accuracy delta alone is small and seed-unstable at n=28 (+2.6pp mean;
+the leaky split "wins" only 16/30 seeds) — the reliable damage was
+elsewhere: a **3.6× sample-size inflation** (102 "patients" were 28 people)
+and the erasure of a claimed finding. The previous pipeline reported
+*spiral beats wave by 9.6pp* (72.4% vs 62.8%, p=0.212) as a
+task-complexity result; under participant-grouped paired evaluation the
+difference is **exactly zero (p = 1.0)** — no evidence one task is more
+diagnostic. The old headline numbers (72.4%/62.8%/90.0%) are **not
+comparable** to the tables above (different features, model, protocol).
+
+**The spurious feature, before and after diagnosis:** on the temporal
+dataset, `z_range` alone appeared to separate the classes at **95.0%**
+with a naive in-sample threshold — reproducing the previous README's
+claim and triggering the artifact investigation. Under participant-grouped
+CV on that single feature the honest score is **0.800 accuracy / 0.925
+AUC**, and adding all z-features to the full model moves its AUC by only
++0.01 (0.947 → 0.957) — a pipeline artifact, not signal (details:
+[docs/data_audit.md](docs/data_audit.md)).
 
 ## Limitations
 
@@ -266,7 +288,8 @@ src/pd_drawing_analysis/   subject_ids.py data.py features.py evaluation.py
                            metrics.py reporting.py fusion.py moe.py synthetic.py
 scripts/                   audit_data.py run_temporal_evaluation.py
                            run_spatial_evaluation.py run_fusion_evaluation.py
-                           run_moe_evaluation.py make_synthetic_fixtures.py env_info.py
+                           run_moe_evaluation.py measure_split_impact.py
+                           make_synthetic_fixtures.py env_info.py
 tests/                     offline pytest suite (no network, no weights)
 configs/                   temporal.yaml spatial.yaml
 docs/                      data_audit.md data_sources.md

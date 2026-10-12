@@ -127,6 +127,10 @@ outcomes. This repository:
    changed participant-level accuracy from 92.5% to 92.5% (AUC 0.947 →
    0.957) — i.e. no dramatic inflation — supporting (but not proving)
    the artifact hypothesis. See `results/real/temporal_real*.json`.
+   For scale: `z_range` alone has an *apparent* in-sample accuracy of
+   95.0% with a naive threshold, but participant-grouped CV on that
+   single feature yields 0.800 accuracy / 0.925 AUC
+   (`scripts/measure_split_impact.py`, `results/impact_numbers.json`).
 
 ## Consequences for evaluation (summary)
 
