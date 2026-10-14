@@ -147,11 +147,13 @@ nested CV (`scripts/run_moe_evaluation.py`).
 | Synthetic two-regime, n=24 | 0.708 | 0.750 | no gain despite near-perfect gate localisation |
 | Mechanics validation, n=1200 rows | 0.700 | 0.850 | beats its weak expert (0.633); architecture is data-hungry |
 
-The gate recovers latent regimes in every setting (purity ≥ 0.99), so the
-implementation is correct — the honest conclusion is that a classical MoE
-does **not** beat a single regularised model at these sample sizes, and no
-gain is claimed. (The repo name's historical "MoE" referred to a removed
-v1 codebase; this module is an independent rebuild.)
+On the synthetic settings the gate recovers the latent regimes (purity
+≥ 0.99), validating the implementation; on real data there is no regime
+ground truth and the gate sits near-uniform (0.57/0.43). The honest
+conclusion is that a classical MoE does **not** beat a single regularised
+model at these sample sizes, and no gain is claimed. (The repo name's
+historical "MoE" referred to a removed v1 codebase; this module is an
+independent rebuild.)
 
 ## Results — reproduced under the corrected protocol
 
