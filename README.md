@@ -211,6 +211,20 @@ AUC**, and adding all z-features to the full model moves its AUC by only
 +0.01 (0.947 → 0.957) — a pipeline artifact, not signal (details:
 [docs/data_audit.md](docs/data_audit.md)).
 
+**Frozen deep features, measured** (optional `--cnn` path: 512-d frozen
+ResNet-18 ImageNet embeddings prepended to HOG+shape, identical protocol):
+
+| Task | HOG+shape | CNN+HOG+shape |
+|---|---|---|
+| Spiral | 0.821 [0.679, 0.964], AUC 0.867 | 0.857 [0.714, 0.964], AUC 0.867 |
+| Wave | 0.821 [0.679, 0.964], AUC 0.826 | 0.750 [0.571, 0.893], AUC 0.836 |
+
+Spiral gains one correctly classified participant, wave loses two; the
+intervals overlap almost completely. The measured conclusion replaces the
+old README's unmeasured "handcrafted beats deep features" claim: at
+n=28 there is **no evidence that frozen deep features help or hurt**,
+and this is not a trained deep baseline (limitations below).
+
 ## Limitations
 
 * Tiny participant counts (28–40) → wide intervals; point estimates are
@@ -220,8 +234,9 @@ AUC**, and adding all z-features to the full model moves its AUC by only
   corrected protocol.
 * No demographic/clinical metadata (age, stage, medication) → confounders
   unmeasurable; labels unverified.
-* Handcrafted features and classical models only; no deep-learning
-  baseline was trained (the optional CNN is a frozen feature extractor).
+* Handcrafted features and classical models only. A frozen ResNet-18
+  extractor was exercised (`--cnn`) and matched handcrafted features
+  within noise; no deep model was *trained* on this data.
 * Single-dataset each; no external validation. Nothing here is evidence
   of clinical utility — these are dataset-label classification results.
 
