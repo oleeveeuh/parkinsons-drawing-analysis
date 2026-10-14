@@ -149,3 +149,23 @@ def test_task_expert_script_on_fixture(spatial_root, tmp_path):
     payload = json.loads((tmp_path / "out" / "moe_task_experts_real.json").read_text())
     assert {"single_spiral", "single_wave", "pooled_logreg", "moe_task_experts"} <= set(payload["models"])
     assert len(payload["gate_mean_weights"]) == 2
+
+
+def test_modality_expert_script_on_paired_fixtures(tmp_path):
+    """Tabular+image expert pair on synthetic paired participants: verifies
+    the feature-slice wiring end to end (each expert sees only its block)."""
+    result = subprocess.run(
+        [sys.executable, str(SCRIPTS / "run_moe_evaluation.py"), "--modality-experts",
+         "--n-resamples", "200", "--output-dir", str(tmp_path / "out")],
+        capture_output=True, text=True, cwd=PROJECT_ROOT,
+    )
+    assert result.returncode == 0, result.stderr
+    import json
+
+    payload = json.loads((tmp_path / "out" / "moe_modality_experts_synthetic.json").read_text())
+    assert {"single_tabular", "single_image", "pooled_logreg", "moe_modality_experts"} <= set(payload["models"])
+    assert payload["dataset"]["blocks"] == {"tabular": 25, "image": payload["dataset"]["blocks"]["image"]}
+    for name, res in payload["models"].items():
+        oof = res["oof"]
+        assert len(oof["proba"]) == payload["dataset"]["n_participants"]
+        assert not np.isnan(np.asarray(oof["proba"])).any()

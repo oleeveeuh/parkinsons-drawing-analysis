@@ -14,6 +14,10 @@ Three modes:
 3. ``--task-experts --spatial-root …`` — real-data run: one expert per
    drawing task (spiral vs wave features of the SAME 28 participants),
    gate over the concatenated features.  No cross-dataset claim.
+4. ``--modality-experts`` — synthetic paired fixtures: one expert per
+   *modality* (tabular recording expert vs image expert) for the same
+   synthetic participants, demonstrating the architecture's feature-
+   slicing with a genuine tabular+image expert pair.
 
 Compare with: ``python scripts/run_fusion_evaluation.py`` (fusion) and
 the single-model scripts.
@@ -246,11 +250,116 @@ def run_task_experts(spatial_root: Path, n_resamples: int) -> dict:
     return results
 
 
+def run_modality_experts(n_resamples: int) -> dict:
+    """Synthetic paired fixtures: tabular expert + image expert.
+
+    Every synthetic participant has BOTH a tablet recording and a spiral
+    drawing, so a tabular expert and an image expert can legitimately
+    specialise in their own modality's feature block while the gate sees
+    the concatenation.  Demonstrates the modality-slicing architecture —
+    the real datasets cannot supply this pairing.
+    """
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+
+    from pd_drawing_analysis.fusion import assemble_paired_data
+    from pd_drawing_analysis.moe import ExpertSpec
+    from pd_drawing_analysis.synthetic import generate_paired_fixtures
+
+    root = Path("data/synthetic/paired")
+    generate_paired_fixtures(root)
+    data, info = assemble_paired_data(root / "temporal", root / "images" / "spiral" / "alldata")
+    widths = {name: mat.shape[1] for name, mat in data.modalities.items()}
+    X = np.hstack([data.modalities["temporal"], data.modalities["image"]])
+    subjects, labels = data.subjects, data.labels
+    print(f"Paired participants: {len(subjects)}; blocks: {widths}")
+
+    slices = {
+        "tabular": slice(0, widths["temporal"]),
+        "image": slice(widths["temporal"], None),
+    }
+    moe_experts = [
+        ExpertSpec("tabular_expert", lambda: LogisticRegression(max_iter=5000, C=0.1),
+                   feature_slice=slices["tabular"]),
+        ExpertSpec("image_expert", lambda: LogisticRegression(max_iter=5000, C=0.1),
+                   feature_slice=slices["image"]),
+    ]
+
+    def make_moe(params: dict | None = None):
+        steps = int((params or {}).get("moe__n_em_steps", 5))
+        return Pipeline([
+            ("scale", StandardScaler()),
+            ("moe", MixtureOfExperts(experts=moe_experts, n_em_steps=steps)),
+        ])
+
+    class _MoESpec:
+        name = "moe_modality_experts"
+        param_grid = {"moe__n_em_steps": [3, 8]}
+
+        @staticmethod
+        def factory():
+            return make_moe()
+
+    _MoESpec.pipeline_builder = staticmethod(make_moe)
+
+    def _logreg_factory():
+        return LogisticRegression(max_iter=5000, C=0.1)
+
+    single_specs = [
+        ModelSpec(name="single_tabular", factory=_logreg_factory, param_grid={}),
+        ModelSpec(name="single_image", factory=_logreg_factory, param_grid={}),
+    ]
+    pooled_spec = ModelSpec(name="pooled_logreg", factory=_logreg_factory,
+                            param_grid={"clf__C": [0.01, 0.1, 1.0]})
+
+    folds = subject_group_folds(subjects, labels, n_splits=5)
+    index_folds = folds_from_subject_sets(subjects, folds)
+
+    results = {"models": {}}
+    print("  evaluating single-modality baselines ...")
+    for spec, block in zip(single_specs, [data.modalities["temporal"], data.modalities["image"]]):
+        results["models"][spec.name] = evaluate_model_family(
+            block, labels, subjects, spec, index_folds, n_resamples=n_resamples
+        )
+    print("  evaluating pooled logreg ...")
+    results["models"]["pooled_logreg"] = evaluate_model_family(
+        X, labels, subjects, pooled_spec, index_folds, n_resamples=n_resamples
+    )
+    print("  evaluating MoE (tabular expert + image expert + gate) ...")
+    results["models"]["moe_modality_experts"] = evaluate_model_family(
+        X, labels, subjects, _MoESpec, index_folds, n_resamples=n_resamples
+    )
+
+    fitted = make_moe().fit(X, labels)
+    gate_mean = fitted.named_steps["moe"].gate_weights(
+        fitted.named_steps["scale"].transform(X)
+    ).mean(axis=0)
+    results["gate_mean_weights"] = gate_mean.round(3).tolist()
+    results["dataset"] = {
+        "name": "Synthetic paired fixtures — modality-sliced MoE (tabular vs image)",
+        "n_participants": int(len(subjects)),
+        "blocks": {"tabular": widths["temporal"], "image": widths["image"]},
+        "expert_slices": {"tabular_expert": "columns 0-24 (recording features)",
+                          "image_expert": f"columns {widths['temporal']}-end (HOG+shape)"},
+        "notes": info,
+    }
+    results["scope_note"] = (
+        "Architecture demonstration on clearly synthetic paired participants. "
+        "The real temporal and image datasets have different participants and "
+        "cannot be combined this way; accuracy numbers here are meaningless "
+        "beyond verifying the slicing mechanics."
+    )
+    return results
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--synthetic", action="store_true", default=True)
     parser.add_argument("--validate-large", action="store_true")
     parser.add_argument("--task-experts", action="store_true")
+    parser.add_argument("--modality-experts", action="store_true",
+                        help="Synthetic paired fixtures: tabular expert vs image expert")
     parser.add_argument("--spatial-root", type=Path, default=Path("KaggleSpiral/drawings"))
     parser.add_argument("--n-resamples", type=int, default=2000)
     parser.add_argument("--output-dir", type=Path, default=Path("results/moe"))
@@ -259,6 +368,9 @@ def main() -> int:
     if args.validate_large:
         results = run_validate_large()
         tag = "validate_large"
+    elif args.modality_experts:
+        results = run_modality_experts(args.n_resamples)
+        tag = "modality_experts_synthetic"
     elif args.task_experts:
         if not args.spatial_root.is_dir():
             raise SystemExit(f"Spatial root {args.spatial_root} not found; download the "
