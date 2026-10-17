@@ -68,8 +68,8 @@ exclusion is re-evaluated transparently with `--include-z`
 2×2 blocks on 128×128 grayscale) + 12 geometric shape descriptors
 (Otsu ink threshold). All per-image, so no fitted statistics and no
 leakage from caching. An optional frozen ResNet-18 (torchvision weights
-API, eval mode, hashed cache keys) is available via `--cnn` but is never
-used by tests or CI.
+API, eval mode, hashed cache keys) can be prepended via `--cnn` —
+exercised in the Results below; never used by tests or CI.
 
 ## Validation protocol (the core of this project)
 
@@ -242,9 +242,10 @@ and this is not a trained deep baseline (limitations below).
   corrected protocol.
 * No demographic/clinical metadata (age, stage, medication) → confounders
   unmeasurable; labels unverified.
-* Handcrafted features and classical models only. A frozen ResNet-18
-  extractor was exercised (`--cnn`) and matched handcrafted features
-  within noise; no deep model was *trained* on this data.
+* No deep model was *trained* on this data (fine-tuning on 28
+  participants was not attempted). The only deep component is a frozen
+  ImageNet ResNet-18 **feature extractor**, compared head-to-head with
+  HOG+shape in the results — parity within noise.
 * Single-dataset each; no external validation. Nothing here is evidence
   of clinical utility — these are dataset-label classification results.
 
