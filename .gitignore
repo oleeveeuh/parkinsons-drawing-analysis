@@ -12,7 +12,13 @@ data/
 KaggleSpiral/
 Improved Spiral Test Using Digitized Graphics Tablet for Monitoring Parkinson's Disease/
 cache/
-results/
+# Full artifacts contain row-level predictions and stay local; the
+# numbers-only summaries under results/summaries/ ARE committed
+# (scripts/export_committed_summaries.py writes them).
+results/*
+!results/summaries/
+# Portfolio-figure output (regenerable via scripts/portfolio_*.py)
+figures/
 
 # --- Generated / obsolete local-only material ---
 local_archive/

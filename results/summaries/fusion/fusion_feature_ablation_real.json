@@ -1,0 +1,376 @@
+{
+  "_provenance": "Numbers-only committed summary of results/fusion/fusion_feature_ablation_real.json (git-ignored). Row-level predictions and per-file listings are stripped; every retained value is copied unchanged. Regenerate the full artifact with the README Setup commands, then rerun scripts/export_committed_summaries.py.",
+  "dataset": {
+    "aggregation": "per-participant mean of frozen per-image features",
+    "modalities": {
+      "hog": 8100,
+      "shape": 12
+    },
+    "n_participants": 28,
+    "name": "Kaggle Parkinson's Drawings (feature-family fusion ablation)"
+  },
+  "environment": {
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.6",
+      "scipy": "1.17.1",
+      "skimage": "0.26.0",
+      "sklearn": "1.9.1",
+      "torch": null,
+      "torchvision": null,
+      "xgboost": null,
+      "yaml": "6.0.3"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.17",
+    "timestamp_utc": "2026-10-07T17:01:36.332255+00:00"
+  },
+  "inner_splits": 3,
+  "models": {
+    "early_fusion": {
+      "folds": [
+        {
+          "fold": 1,
+          "inner_cv_score": 0.736111111111111,
+          "selected_params": {
+            "clf__C": 0.01
+          }
+        },
+        {
+          "fold": 2,
+          "inner_cv_score": 0.7777777777777777,
+          "selected_params": {
+            "clf__C": 0.1
+          }
+        },
+        {
+          "fold": 3,
+          "inner_cv_score": 0.9166666666666666,
+          "selected_params": {
+            "clf__C": 0.01
+          }
+        },
+        {
+          "fold": 4,
+          "inner_cv_score": 0.7777777777777777,
+          "selected_params": {
+            "clf__C": 0.01
+          }
+        },
+        {
+          "fold": 5,
+          "inner_cv_score": 0.875,
+          "selected_params": {
+            "clf__C": 0.1
+          }
+        }
+      ],
+      "participant_metrics": {
+        "accuracy": 0.8214285714285714,
+        "balanced_accuracy": 0.823076923076923,
+        "confusion_matrix": [
+          [
+            11,
+            2
+          ],
+          [
+            3,
+            12
+          ]
+        ],
+        "f1": 0.8275862068965517,
+        "n_images": 28,
+        "n_subjects": 28,
+        "roc_auc": 0.8307692307692308,
+        "sensitivity": 0.8,
+        "specificity": 0.8461538461538461,
+        "subject_bootstrap_ci": {
+          "accuracy": [
+            0.6785714285714286,
+            0.9642857142857143
+          ],
+          "balanced_accuracy": [
+            0.6743589743589744,
+            0.9615384615384616
+          ],
+          "f1": [
+            0.6666666666666666,
+            0.9655172413793104
+          ],
+          "roc_auc": [
+            0.6460256410256412,
+            0.9641025641025641
+          ],
+          "sensitivity": [
+            0.6,
+            1.0
+          ],
+          "specificity": [
+            0.6153846153846154,
+            1.0
+          ]
+        }
+      }
+    },
+    "late_fusion": {
+      "folds": [
+        {
+          "fold": 1,
+          "inner_cv_score": 0.7916666666666666,
+          "selected_weight": 0.5
+        },
+        {
+          "fold": 2,
+          "inner_cv_score": 0.8194444444444443,
+          "selected_weight": 0.6
+        },
+        {
+          "fold": 3,
+          "inner_cv_score": 0.9166666666666666,
+          "selected_weight": 0.6
+        },
+        {
+          "fold": 4,
+          "inner_cv_score": 0.7916666666666666,
+          "selected_weight": 0.5
+        },
+        {
+          "fold": 5,
+          "inner_cv_score": 0.9166666666666666,
+          "selected_weight": 0.4
+        }
+      ],
+      "participant_metrics": {
+        "accuracy": 0.75,
+        "balanced_accuracy": 0.7512820512820513,
+        "confusion_matrix": [
+          [
+            10,
+            3
+          ],
+          [
+            4,
+            11
+          ]
+        ],
+        "f1": 0.7586206896551724,
+        "n_images": 28,
+        "n_subjects": 28,
+        "roc_auc": 0.8666666666666666,
+        "sensitivity": 0.7333333333333333,
+        "specificity": 0.7692307692307693,
+        "subject_bootstrap_ci": {
+          "accuracy": [
+            0.5714285714285714,
+            0.8928571428571429
+          ],
+          "balanced_accuracy": [
+            0.5743589743589743,
+            0.8948717948717949
+          ],
+          "f1": [
+            0.5714285714285714,
+            0.9032258064516129
+          ],
+          "roc_auc": [
+            0.7128205128205127,
+            0.9743589743589745
+          ],
+          "sensitivity": [
+            0.4666666666666667,
+            0.9333333333333333
+          ],
+          "specificity": [
+            0.5384615384615384,
+            1.0
+          ]
+        }
+      }
+    },
+    "single_hog": {
+      "participant_metrics": {
+        "accuracy": 0.8214285714285714,
+        "balanced_accuracy": 0.823076923076923,
+        "confusion_matrix": [
+          [
+            11,
+            2
+          ],
+          [
+            3,
+            12
+          ]
+        ],
+        "f1": 0.8275862068965517,
+        "n_images": 28,
+        "n_subjects": 28,
+        "roc_auc": 0.8307692307692308,
+        "sensitivity": 0.8,
+        "specificity": 0.8461538461538461,
+        "subject_bootstrap_ci": {
+          "accuracy": [
+            0.6785714285714286,
+            0.9642857142857143
+          ],
+          "balanced_accuracy": [
+            0.6743589743589744,
+            0.9615384615384616
+          ],
+          "f1": [
+            0.6666666666666666,
+            0.9655172413793104
+          ],
+          "roc_auc": [
+            0.6460256410256412,
+            0.9641025641025641
+          ],
+          "sensitivity": [
+            0.6,
+            1.0
+          ],
+          "specificity": [
+            0.6153846153846154,
+            1.0
+          ]
+        }
+      }
+    },
+    "single_shape": {
+      "participant_metrics": {
+        "accuracy": 0.6428571428571429,
+        "balanced_accuracy": 0.6512820512820513,
+        "confusion_matrix": [
+          [
+            10,
+            3
+          ],
+          [
+            7,
+            8
+          ]
+        ],
+        "f1": 0.6153846153846154,
+        "n_images": 28,
+        "n_subjects": 28,
+        "roc_auc": 0.7282051282051283,
+        "sensitivity": 0.5333333333333333,
+        "specificity": 0.7692307692307693,
+        "subject_bootstrap_ci": {
+          "accuracy": [
+            0.4642857142857143,
+            0.8214285714285714
+          ],
+          "balanced_accuracy": [
+            0.47435897435897434,
+            0.823076923076923
+          ],
+          "f1": [
+            0.38068783068783113,
+            0.8148148148148148
+          ],
+          "roc_auc": [
+            0.5383333333333336,
+            0.9025641025641026
+          ],
+          "sensitivity": [
+            0.26666666666666666,
+            0.8
+          ],
+          "specificity": [
+            0.5384615384615384,
+            1.0
+          ]
+        }
+      }
+    },
+    "stacked_fusion": {
+      "folds": [
+        {
+          "fold": 1,
+          "inner_cv_score": 0.6388888888888888,
+          "selected_params": {
+            "C": 1.0
+          }
+        },
+        {
+          "fold": 2,
+          "inner_cv_score": 0.6388888888888888,
+          "selected_params": {
+            "C": 1.0
+          }
+        },
+        {
+          "fold": 3,
+          "inner_cv_score": 0.875,
+          "selected_params": {
+            "C": 1.0
+          }
+        },
+        {
+          "fold": 4,
+          "inner_cv_score": 0.736111111111111,
+          "selected_params": {
+            "C": 1.0
+          }
+        },
+        {
+          "fold": 5,
+          "inner_cv_score": 0.875,
+          "selected_params": {
+            "C": 1.0
+          }
+        }
+      ],
+      "participant_metrics": {
+        "accuracy": 0.75,
+        "balanced_accuracy": 0.7512820512820513,
+        "confusion_matrix": [
+          [
+            10,
+            3
+          ],
+          [
+            4,
+            11
+          ]
+        ],
+        "f1": 0.7586206896551724,
+        "n_images": 28,
+        "n_subjects": 28,
+        "roc_auc": 0.8307692307692308,
+        "sensitivity": 0.7333333333333333,
+        "specificity": 0.7692307692307693,
+        "subject_bootstrap_ci": {
+          "accuracy": [
+            0.5714285714285714,
+            0.8928571428571429
+          ],
+          "balanced_accuracy": [
+            0.5743589743589743,
+            0.8948717948717949
+          ],
+          "f1": [
+            0.5714285714285714,
+            0.9032258064516129
+          ],
+          "roc_auc": [
+            0.6512820512820513,
+            0.9692307692307692
+          ],
+          "sensitivity": [
+            0.4666666666666667,
+            0.9333333333333333
+          ],
+          "specificity": [
+            0.5384615384615384,
+            1.0
+          ]
+        }
+      }
+    }
+  },
+  "n_subjects": 28,
+  "outer_splits": 5,
+  "random_state": 42,
+  "scope_note": "Feature-family fusion of descriptors of the SAME drawings. The temporal and spatial datasets in this repo have different participants and are not fused anywhere."
+}

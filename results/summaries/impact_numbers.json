@@ -1,0 +1,52 @@
+{
+  "_provenance": "Numbers-only committed summary of results/impact_numbers.json (git-ignored). Row-level predictions and per-file listings are stripped; every retained value is copied unchanged. Regenerate the full artifact with the README Setup commands, then rerun scripts/export_committed_summaries.py.",
+  "environment": {
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.6",
+      "scipy": "1.17.1",
+      "skimage": "0.26.0",
+      "sklearn": "1.9.1",
+      "torch": null,
+      "torchvision": null,
+      "xgboost": null,
+      "yaml": "6.0.3"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.17",
+    "timestamp_utc": "2026-10-12T20:49:15.992764+00:00"
+  },
+  "spatial_split_impact": {
+    "difference_leaky_minus_grouped": {
+      "leaky_wins_seeds": "16/30",
+      "mean": 0.026,
+      "range": [
+        -0.071,
+        0.143
+      ]
+    },
+    "interpretation": "At n=28 the accuracy delta is small and seed-unstable; the reliable effects are unit inflation (102 images vs 28 participants) and 97-100% subject exposure in the leaky split.",
+    "leaky_image_level_split": {
+      "advertised_n": 102,
+      "image_level_headline_accuracy": 0.787,
+      "participant_accuracy_mean": 0.86,
+      "participant_accuracy_std": 0.033,
+      "subject_in_training_exposure": 0.97,
+      "true_participant_n": 28
+    },
+    "model": "VarianceThreshold+StandardScaler+PCA(95%)+LogReg(C=0.1, balanced), identical in both arms; participant-level aggregation in both arms",
+    "participant_grouped_split": {
+      "participant_accuracy_mean": 0.833,
+      "participant_accuracy_std": 0.028
+    },
+    "seeds": 30
+  },
+  "z_range_artifact": {
+    "apparent_score_naive_threshold_in_sample": 0.95,
+    "honest_participant_grouped_cv_single_feature": {
+      "accuracy": 0.8,
+      "auc": 0.925
+    },
+    "note": "in-sample threshold reproduces the previous README's 95% claim; participant-grouped CV on the same single feature is the honest score"
+  }
+}

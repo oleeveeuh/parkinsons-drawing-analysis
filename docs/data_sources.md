@@ -50,7 +50,12 @@ Expected directory counts: 40 `.txt` files in this project's subset
 * **ND** — no derivatives: modified copies of the images may not be
   redistributed unless permission is established. This repository
   therefore ships **no image files** and derived feature caches are not
-  distributed either.
+  distributed either. (One disclosed exception lives outside this
+  repository: the project's portfolio write-up embeds a single
+  contrast-adjusted sample scan, spiral `V01HE02`, credited in place on
+  the schematic and in its alt text, as illustration. This is a judgment
+  call made knowingly; the stricter reading of ND would keep even that
+  off the public site.)
 * The datasets' license does not change with this repository's code
   license: whatever code license is later chosen grants **no** rights to
   the datasets themselves.

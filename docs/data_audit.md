@@ -86,12 +86,13 @@ Consequences:
 ### Provenance gaps (documented, not resolved)
 
 * The UCI record (DOI [10.24432/C5Q01S](https://doi.org/10.24432/C5Q01S))
-  lists **77 instances: 62 PWP + 15 healthy**. This repository uses all
-  15 healthy and **25 of 62** PWP recordings — the 37 remaining PWP
-  files from the UCI archive are absent. The 25/15 composition matches
-  the cohort described in the dataset paper (Isenkul et al.), so the
-  subset appears to be the paper cohort, but this cannot be verified
-  from the files alone.
+  lists **77 instances: 62 PWP + 15 healthy**. The copy this project
+  downloaded contains 40 files; this repository uses all 15 healthy and
+  **25 of 62** PWP recordings — the 37 remaining PWP files listed in the
+  UCI record are not present in the downloaded copy. The 25/15
+  composition matches the cohort described in the dataset paper
+  (Isenkul et al.), so the subset appears to be the paper cohort, but
+  this cannot be verified from the files alone.
 * Original UCI filenames (e.g. `P_27110003.txt`) were replaced by
   generic `PWP (N).txt` / `Healthy (N).txt`, destroying the original
   participant identifiers. Each file is *treated as* one unique
@@ -141,5 +142,13 @@ outcomes. This repository:
    thresholded) before primary metrics.
 4. Spiral and wave evaluated on **identical** participant folds (all 28
    participants completed both tasks); task comparisons are paired.
-5. The dummy majority baseline anchors interpretation: 46.4% (spatial
-   participant level) and 62.5% (temporal).
+5. The dummy baseline anchors interpretation: 62.5% (temporal — equal to
+   the dataset majority, 25 PD of 40) and 46.4% (spatial participant
+   level). The spatial 46.4% is *not* the dataset's majority rate — at
+   the participant level the majority class is PD (15 of 28 = 53.6%). It
+   is the cross-validation dummy, which predicts each fold's
+   training-majority class at the drawing level, where the classes are
+   exactly 51/51, so the tie breaks on which heavy-drawing participants
+   land in a fold's training set (per-fold accuracies 0.4–0.5; net 13 of
+   28 participants correct). Report both numbers; never let the CV dummy
+   be read as the dataset property.

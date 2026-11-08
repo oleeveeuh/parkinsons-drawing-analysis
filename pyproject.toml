@@ -31,6 +31,10 @@ cnn = ["torch>=2.2", "torchvision>=0.17"]
 # Optional comparison model, evaluated only after the simple baselines.
 xgboost = ["xgboost>=2.0,<4"]
 dev = ["pytest>=8.0", "ruff>=0.4"]
+# Portfolio-site figure generation (scripts/portfolio_*.py) — reads the
+# frozen results JSONs and renders the fieldnotes-themed PNGs. Not needed
+# for tests or CI.
+figures = ["matplotlib>=3.8"]
 
 [project.scripts]
 pd-drawing-env = "pd_drawing_analysis.__init__:print_environment"

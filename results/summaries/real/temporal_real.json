@@ -1,0 +1,509 @@
+{
+  "_provenance": "Numbers-only committed summary of results/real/temporal_real.json (git-ignored). Row-level predictions and per-file listings are stripped; every retained value is copied unchanged. Regenerate the full artifact with the README Setup commands, then rerun scripts/export_committed_summaries.py.",
+  "dataset": {
+    "feature_names": [
+      "duration_norm",
+      "sample_rate_norm",
+      "n_points_log",
+      "velocity_mean",
+      "velocity_std",
+      "velocity_max",
+      "acceleration_mean",
+      "acceleration_std",
+      "jerk_mean",
+      "direction_changes_rate",
+      "path_length",
+      "displacement_ratio",
+      "pressure_mean",
+      "pressure_std",
+      "pressure_cv",
+      "pressure_rate",
+      "grip_angle_std",
+      "on_paper_ratio",
+      "tremor_power_4_8hz",
+      "tremor_ratio_4_8hz",
+      "speed_cv",
+      "pause_ratio",
+      "radius_mean",
+      "radius_std",
+      "radial_smoothness"
+    ],
+    "include_z_features": false,
+    "n_features": 25,
+    "n_recordings": 40,
+    "n_subjects": 40,
+    "name": "UCI Parkinson Disease Spiral Drawings",
+    "subjects_by_label": {
+      "0": 15,
+      "1": 25
+    }
+  },
+  "environment": {
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.6",
+      "scipy": "1.17.1",
+      "skimage": "0.26.0",
+      "sklearn": "1.9.1",
+      "torch": null,
+      "torchvision": null,
+      "xgboost": null,
+      "yaml": "6.0.3"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.17",
+    "timestamp_utc": "2026-10-05T20:41:42.995662+00:00"
+  },
+  "inner_splits": 3,
+  "models": {
+    "decision_tree_depth2_4": {
+      "fold_variability": {
+        "accuracy": {
+          "mean": 0.725,
+          "std": 0.18371173070873836,
+          "values": [
+            0.375,
+            0.875,
+            0.875,
+            0.75,
+            0.75
+          ]
+        },
+        "balanced_accuracy": {
+          "mean": 0.7133333333333334,
+          "std": 0.21969676071045444,
+          "values": [
+            0.3,
+            0.9,
+            0.9,
+            0.7333333333333334,
+            0.7333333333333334
+          ]
+        },
+        "f1": {
+          "mean": 0.7846464646464646,
+          "std": 0.12602952219721636,
+          "values": [
+            0.5454545454545454,
+            0.8888888888888888,
+            0.8888888888888888,
+            0.8,
+            0.8
+          ]
+        }
+      },
+      "folds": [
+        {
+          "best_params": {
+            "clf__max_depth": 2
+          },
+          "fold": 1,
+          "inner_cv_score": 0.7718253968253969,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.375,
+          "participant_balanced_accuracy": 0.3,
+          "participant_f1": 0.5454545454545454
+        },
+        {
+          "best_params": {
+            "clf__max_depth": 2
+          },
+          "fold": 2,
+          "inner_cv_score": 0.6746031746031745,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.875,
+          "participant_balanced_accuracy": 0.9,
+          "participant_f1": 0.8888888888888888
+        },
+        {
+          "best_params": {
+            "clf__max_depth": 2
+          },
+          "fold": 3,
+          "inner_cv_score": 0.8472222222222223,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.875,
+          "participant_balanced_accuracy": 0.9,
+          "participant_f1": 0.8888888888888888
+        },
+        {
+          "best_params": {
+            "clf__max_depth": 2
+          },
+          "fold": 4,
+          "inner_cv_score": 0.7876984126984127,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.75,
+          "participant_balanced_accuracy": 0.7333333333333334,
+          "participant_f1": 0.8
+        },
+        {
+          "best_params": {
+            "clf__max_depth": 2
+          },
+          "fold": 5,
+          "inner_cv_score": 0.8829365079365079,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.75,
+          "participant_balanced_accuracy": 0.7333333333333334,
+          "participant_f1": 0.8
+        }
+      ],
+      "model": "decision_tree_depth2_4",
+      "participant_metrics": {
+        "accuracy": 0.725,
+        "balanced_accuracy": 0.7133333333333334,
+        "confusion_matrix": [
+          [
+            10,
+            5
+          ],
+          [
+            6,
+            19
+          ]
+        ],
+        "f1": 0.7755102040816326,
+        "n_images": 40,
+        "n_subjects": 40,
+        "roc_auc": 0.6880000000000001,
+        "sensitivity": 0.76,
+        "specificity": 0.6666666666666666,
+        "subject_bootstrap_ci": {
+          "accuracy": [
+            0.575,
+            0.85
+          ],
+          "balanced_accuracy": [
+            0.5666666666666667,
+            0.8533333333333333
+          ],
+          "f1": [
+            0.6511627906976745,
+            0.8846153846153846
+          ],
+          "roc_auc": [
+            0.5266666666666666,
+            0.8480000000000001
+          ],
+          "sensitivity": [
+            0.6,
+            0.92
+          ],
+          "specificity": [
+            0.46500000000000297,
+            0.8666666666666667
+          ]
+        }
+      }
+    },
+    "dummy_majority": {
+      "fold_variability": {
+        "accuracy": {
+          "mean": 0.625,
+          "std": 0.0,
+          "values": [
+            0.625,
+            0.625,
+            0.625,
+            0.625,
+            0.625
+          ]
+        },
+        "balanced_accuracy": {
+          "mean": 0.5,
+          "std": 0.0,
+          "values": [
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5
+          ]
+        },
+        "f1": {
+          "mean": 0.7692307692307693,
+          "std": 0.0,
+          "values": [
+            0.7692307692307693,
+            0.7692307692307693,
+            0.7692307692307693,
+            0.7692307692307693,
+            0.7692307692307693
+          ]
+        }
+      },
+      "folds": [
+        {
+          "best_params": {},
+          "fold": 1,
+          "inner_cv_score": 0.5,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.625,
+          "participant_balanced_accuracy": 0.5,
+          "participant_f1": 0.7692307692307693
+        },
+        {
+          "best_params": {},
+          "fold": 2,
+          "inner_cv_score": 0.5,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.625,
+          "participant_balanced_accuracy": 0.5,
+          "participant_f1": 0.7692307692307693
+        },
+        {
+          "best_params": {},
+          "fold": 3,
+          "inner_cv_score": 0.5,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.625,
+          "participant_balanced_accuracy": 0.5,
+          "participant_f1": 0.7692307692307693
+        },
+        {
+          "best_params": {},
+          "fold": 4,
+          "inner_cv_score": 0.5,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.625,
+          "participant_balanced_accuracy": 0.5,
+          "participant_f1": 0.7692307692307693
+        },
+        {
+          "best_params": {},
+          "fold": 5,
+          "inner_cv_score": 0.5,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.625,
+          "participant_balanced_accuracy": 0.5,
+          "participant_f1": 0.7692307692307693
+        }
+      ],
+      "model": "dummy_majority",
+      "participant_metrics": {
+        "accuracy": 0.625,
+        "balanced_accuracy": 0.5,
+        "confusion_matrix": [
+          [
+            0,
+            15
+          ],
+          [
+            0,
+            25
+          ]
+        ],
+        "f1": 0.7692307692307693,
+        "n_images": 40,
+        "n_subjects": 40,
+        "roc_auc": null,
+        "sensitivity": 1.0,
+        "specificity": 0.0,
+        "subject_bootstrap_ci": {
+          "accuracy": [
+            0.625,
+            0.625
+          ],
+          "balanced_accuracy": [
+            0.5,
+            0.5
+          ],
+          "f1": [
+            0.7692307692307693,
+            0.7692307692307693
+          ],
+          "sensitivity": [
+            1.0,
+            1.0
+          ],
+          "specificity": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    "logreg_balanced": {
+      "fold_variability": {
+        "accuracy": {
+          "mean": 0.925,
+          "std": 0.06123724356957946,
+          "values": [
+            0.875,
+            1.0,
+            0.875,
+            1.0,
+            0.875
+          ]
+        },
+        "balanced_accuracy": {
+          "mean": 0.9133333333333333,
+          "std": 0.07483314773547886,
+          "values": [
+            0.8333333333333333,
+            1.0,
+            0.9,
+            1.0,
+            0.8333333333333333
+          ]
+        },
+        "f1": {
+          "mean": 0.9414141414141414,
+          "std": 0.0484006002048927,
+          "values": [
+            0.9090909090909091,
+            1.0,
+            0.8888888888888888,
+            1.0,
+            0.9090909090909091
+          ]
+        }
+      },
+      "folds": [
+        {
+          "best_params": {
+            "clf__C": 0.1
+          },
+          "fold": 1,
+          "inner_cv_score": 0.9523809523809524,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.875,
+          "participant_balanced_accuracy": 0.8333333333333333,
+          "participant_f1": 0.9090909090909091
+        },
+        {
+          "best_params": {
+            "clf__C": 0.1
+          },
+          "fold": 2,
+          "inner_cv_score": 0.8412698412698413,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 1.0,
+          "participant_balanced_accuracy": 1.0,
+          "participant_f1": 1.0
+        },
+        {
+          "best_params": {
+            "clf__C": 1.0
+          },
+          "fold": 3,
+          "inner_cv_score": 0.8928571428571429,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.875,
+          "participant_balanced_accuracy": 0.9,
+          "participant_f1": 0.8888888888888888
+        },
+        {
+          "best_params": {
+            "clf__C": 0.01
+          },
+          "fold": 4,
+          "inner_cv_score": 0.9107142857142857,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 1.0,
+          "participant_balanced_accuracy": 1.0,
+          "participant_f1": 1.0
+        },
+        {
+          "best_params": {
+            "clf__C": 0.1
+          },
+          "fold": 5,
+          "inner_cv_score": 0.9484126984126985,
+          "n_eval_images": 8,
+          "n_eval_subjects": 8,
+          "n_train_images": 32,
+          "participant_accuracy": 0.875,
+          "participant_balanced_accuracy": 0.8333333333333333,
+          "participant_f1": 0.9090909090909091
+        }
+      ],
+      "model": "logreg_balanced",
+      "participant_metrics": {
+        "accuracy": 0.925,
+        "balanced_accuracy": 0.9133333333333333,
+        "confusion_matrix": [
+          [
+            13,
+            2
+          ],
+          [
+            1,
+            24
+          ]
+        ],
+        "f1": 0.9411764705882353,
+        "n_images": 40,
+        "n_subjects": 40,
+        "roc_auc": 0.9466666666666667,
+        "sensitivity": 0.96,
+        "specificity": 0.8666666666666667,
+        "subject_bootstrap_ci": {
+          "accuracy": [
+            0.825,
+            1.0
+          ],
+          "balanced_accuracy": [
+            0.8133333333333332,
+            1.0
+          ],
+          "f1": [
+            0.869524200164069,
+            1.0
+          ],
+          "roc_auc": [
+            0.8586666666666667,
+            1.0
+          ],
+          "sensitivity": [
+            0.88,
+            1.0
+          ],
+          "specificity": [
+            0.6666666666666666,
+            1.0
+          ]
+        }
+      }
+    }
+  },
+  "outer_splits": 5,
+  "protocol": {
+    "aggregation": "per-recording (one drawing per participant)",
+    "grouping": "subject (one recording per participant)",
+    "inner_splits": 3,
+    "outer_splits": 5,
+    "preprocessing": "variance filter, scaling, PCA fitted inside each fold via sklearn Pipeline",
+    "uncertainty": "deterministic subject-level stratified bootstrap, percentile intervals"
+  },
+  "random_state": 42
+}

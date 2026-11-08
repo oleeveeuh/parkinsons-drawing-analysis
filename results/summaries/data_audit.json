@@ -1,0 +1,82 @@
+{
+  "_provenance": "Numbers-only committed summary of results/data_audit.json (git-ignored). Row-level predictions and per-file listings are stripped; every retained value is copied unchanged. Regenerate the full artifact with the README Setup commands, then rerun scripts/export_committed_summaries.py.",
+  "environment": null,
+  "spatial": {
+    "listing_note": "per-file listing and local root stripped; aggregate counts in 'summary', supplied-split audit in 'vendor_split_leakage'",
+    "n_duplicate_image_paths": 0,
+    "summary": {
+      "per_task": {
+        "spiral": {
+          "drawings_per_subject": {
+            "15": 1,
+            "3": 26,
+            "9": 1
+          },
+          "n_images": 102,
+          "n_images_by_label": {
+            "0": 51,
+            "1": 51
+          },
+          "n_subjects": 28,
+          "n_subjects_by_label": {
+            "0": 13,
+            "1": 15
+          }
+        },
+        "wave": {
+          "drawings_per_subject": {
+            "15": 1,
+            "3": 26,
+            "9": 1
+          },
+          "n_images": 102,
+          "n_images_by_label": {
+            "0": 51,
+            "1": 51
+          },
+          "n_subjects": 28,
+          "n_subjects_by_label": {
+            "0": 13,
+            "1": 15
+          }
+        }
+      },
+      "shared_subjects_across_tasks": 28
+    },
+    "vendor_split_leakage": [
+      {
+        "shared_subjects": 25,
+        "task": "spiral",
+        "test_images": 30,
+        "test_subjects": 25,
+        "test_subjects_leaked": "100%",
+        "train_images": 72,
+        "train_subjects": 28
+      },
+      {
+        "shared_subjects": 24,
+        "task": "wave",
+        "test_images": 30,
+        "test_subjects": 24,
+        "test_subjects_leaked": "100%",
+        "train_images": 72,
+        "train_subjects": 28
+      }
+    ]
+  },
+  "temporal": {
+    "listing_note": "per-file listing and local root stripped; aggregate counts in 'summary', supplied-split audit in 'vendor_split_leakage'",
+    "summary": {
+      "n_images_by_label": {
+        "0": 15,
+        "1": 25
+      },
+      "n_recordings": 40,
+      "n_subjects": 40,
+      "n_subjects_by_label": {
+        "0": 15,
+        "1": 25
+      }
+    }
+  }
+}

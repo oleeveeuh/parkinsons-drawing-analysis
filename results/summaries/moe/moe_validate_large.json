@@ -1,0 +1,37 @@
+{
+  "_provenance": "Numbers-only committed summary of results/moe/moe_validate_large.json (git-ignored). Row-level predictions and per-file listings are stripped; every retained value is copied unchanged. Regenerate the full artifact with the README Setup commands, then rerun scripts/export_committed_summaries.py.",
+  "dataset": {
+    "n_test": 180,
+    "n_train": 420,
+    "name": "Two-regime fixture, n=600 (1200 rows), 30% stratified holdout"
+  },
+  "environment": {
+    "packages": {
+      "numpy": "2.4.6",
+      "pandas": "3.0.6",
+      "scipy": "1.17.1",
+      "skimage": "0.26.0",
+      "sklearn": "1.9.1",
+      "torch": null,
+      "torchvision": null,
+      "xgboost": null,
+      "yaml": "6.0.3"
+    },
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.11.17",
+    "timestamp_utc": "2026-10-07T17:25:34.307339+00:00"
+  },
+  "gate_regime_purity": 0.9866666666666667,
+  "models": {
+    "moe_em": {
+      "test_accuracy": 0.7
+    },
+    "single_logreg_strong_l2": {
+      "test_accuracy": 0.6333333333333333
+    },
+    "single_tree_depth3": {
+      "test_accuracy": 0.85
+    }
+  },
+  "scope_note": "Mechanics validation on abundant synthetic data: verifies the EM mixture can localise experts and outperform its weak single expert when data is sufficient. NOT an estimate for the real datasets."
+}
